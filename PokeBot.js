@@ -152,6 +152,8 @@
 
     PokeBot.compare2 = function(pokemon1, pokemon2, step2 = false) {
         for (var key in pokemon1) {
+            if (key == "id") continue;
+            if (key == "name") continue;
             if (!pokemon2.hasOwnProperty(key) || (pokemon2[key] != pokemon1[key])) return false;
         }
         if (step2) return true;
