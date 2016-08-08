@@ -100,25 +100,35 @@
     };
 
     function PokeBot() {
-        BasePokeBot.call(this);        
+        BasePokeBot.call(this);
+        this.lastSearch = {
+            conditions: null,
+            list: null,
+            result: null
+        };
     };
 
     PokeBot.prototype = {};
-    PokeBot.prototype.__proto__ = BasePokeBot.prototype;    
-    
+    PokeBot.prototype.__proto__ = BasePokeBot.prototype;        
 
     PokeBot.prototype.find = function(list, conditions) {
-        let result = [];
+        if ((conditions === this.lastSearch.conditions) && (list === this.lastSearch.list)) {
+            return this.lastSearch.result;
+        }
+        let result = [];        
         for (let pokemon of list) {
             if (PokeBot.check(pokemon, conditions)) {
                 result.push(pokemon);
             }
         }
+        this.lastSearch.list = list;
+        this.lastSearch.conditions = conditions;
+        this.lastSearch.result = result;
         return result;
     };
 
     PokeBot.check = function(pokemon, conditions) {
-        for (let condition of condition) {            
+        for (let condition of conditions) {            
             for (var key in condition) {
                 if (!pokemon.hasOwnProperty(key) || (pokemon[key] != condition[key]) {
                     return false;
